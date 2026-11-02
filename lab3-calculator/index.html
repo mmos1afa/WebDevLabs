@@ -61,7 +61,11 @@
         if (!/^[0-9+\-*/(). ]+$/.test(display.value)) return;
 
         try {
-          display.value = Function("return " + display.value)().toFixed(7);
+          const expression = display.value
+            .replace(/(\d|\))\(/g, "$1*(")
+            .replace(/\)(\d)/g, ")*$1");
+
+          display.value = Function("return " + expression)().toFixed(7);
         } catch {
           display.value = "Error";
         }
